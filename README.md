@@ -6,7 +6,7 @@ This is particularly useful if you're using Terraform-based tooling in internet-
 The service is
 1. written in Go
 2. Exposes several HTTP REST endpoints
-3. Backed by S3 object store - In practice, any S3 API-compatible object store, such as MinIO can be used
+3. Backed by S3 object store - Any S3 API-compatible object store, such as MinIO can be used
 
 ## Installation
 
