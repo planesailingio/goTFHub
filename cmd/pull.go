@@ -28,42 +28,47 @@ var pullCmd = &cobra.Command{
 			return
 		}
 
+		workCh := make(chan interface{}) // Channel for both providers and modules
 		var wg sync.WaitGroup
-		if parallelForks == 0 {
-			parallelForks = 1
-		}
-		sem := make(chan struct{}, parallelForks) // Control concurrency
 
+		// Start consumer goroutines
+		for i := 0; i < parallelForks; i++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for work := range workCh {
+					switch item := work.(type) {
+					case commonlib.Provider:
+						providerPath := filepath.Join(outputDir, "providers")
+						if err := commonlib.ProcessProvider(item, artefactCount, providerPath); err != nil {
+							fmt.Fprintf(os.Stderr, "Error processing provider %s: %v\n", item.Namespace, err)
+						}
+					case commonlib.Module:
+						modulePath := filepath.Join(outputDir, "modules")
+						if err := commonlib.ProcessModule(item, artefactCount, modulePath); err != nil {
+							fmt.Fprintf(os.Stderr, "Error processing module %s: %v\n", item.Namespace, err)
+						}
+					}
+				}
+			}()
+		}
+
+		// Produce work for providers
 		for _, provider := range providers {
-			wg.Add(1)
-			sem <- struct{}{}
-			go func(p commonlib.Provider) {
-				defer wg.Done()
-				providerPath := filepath.Join(outputDir, "providers")
-				if err := commonlib.ProcessProvider(p, artefactCount, providerPath); err != nil {
-					fmt.Fprintf(os.Stderr, "Error processing provider %s: %v\n", p.Namespace, err)
-				}
-				<-sem
-			}(provider)
+			workCh <- provider
 		}
 
+		// Produce work for modules
 		for _, module := range modules {
-			wg.Add(1)
-			sem <- struct{}{}
-			go func(m commonlib.Module) {
-				defer wg.Done()
-				modulePath := filepath.Join(outputDir, "modules")
-				if err := commonlib.ProcessModule(m, artefactCount, modulePath); err != nil {
-					fmt.Fprintf(os.Stderr, "Error processing provider %s: %v\n", m.Namespace, err)
-				}
-				<-sem
-			}(module)
+			workCh <- module
 		}
 
-		wg.Wait()
+		close(workCh) // Close the channel after all work is queued
+		wg.Wait()     // Wait for all consumers to finish
 		return
 	},
 }
+
 var parallelForks int
 
 func init() {
