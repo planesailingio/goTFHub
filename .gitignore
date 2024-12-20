@@ -72,3 +72,5 @@ terraform-registry/
 helm/values.yaml
 dist/
 bin/
+**
+.**
