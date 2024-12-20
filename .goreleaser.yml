@@ -1,9 +1,11 @@
-
 version: 2
 project_name: gotfhub
 report_sizes: false
 metadata:
   mod_timestamp: "{{ .CommitTimestamp }}"
+
+env:
+  - DOCKER_CONFIG=$HOME/.docker/planesailingio
 builds:
   - id: default
     goos:
@@ -25,30 +27,30 @@ builds:
       - CGO_ENABLED=0
 
 
-# dockers:
+dockers:
+- image_templates:
+  - planesailingio/gotfhub:latest-amd64
+  - planesailingio/gotfhub:{{ .Version }}-amd64
+  - planesailingio/gotfhub:{{ .Major }}-amd64
+  - planesailingio/gotfhub:{{ .Major }}.{{ .Minor }}-amd64
+  use: buildx
+  skip_push: false
+  # templated_dockerfile: Dockerfile
+  build_flag_templates:
+    - "--pull"
+    # - "--label=io.planesailing.cli.created={{.Date}}"
+    # - "--label=io.pigeono.cli.title={{.ProjectName}}"
+    # - "--label=io.pigeono.cli.revision={{.FullCommit}}"
+    # - "--label=io.pigeono.cli.version={{.Version}}"
+    - "--build-arg=VERSION={{ .Version }}"
+    - "--build-arg=OS=linux"
+    - "--build-arg=ARCH=amd64"
+    - "--platform=linux/amd64"
 # - image_templates:
-#   - pigeonholeio/pigeonhole-cli:latest-amd64
-#   - pigeonholeio/pigeonhole-cli:{{ .Version }}-amd64
-#   - pigeonholeio/pigeonhole-cli:{{ .Major }}-amd64
-#   - pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-amd64
-#   use: buildx
-#   skip_push: true
-#   # templated_dockerfile: Dockerfile
-#   build_flag_templates:
-#     - "--pull"
-#     - "--label=io.pigeono.cli.created={{.Date}}"
-#     - "--label=io.pigeono.cli.title={{.ProjectName}}"
-#     - "--label=io.pigeono.cli.revision={{.FullCommit}}"
-#     - "--label=io.pigeono.cli.version={{.Version}}"
-#     - "--build-arg=VERSION={{ .Version }}"
-#     - "--build-arg=OS=linux"
-#     - "--build-arg=ARCH=amd64"
-#     - "--platform=linux/amd64"
-# - image_templates:
-#   - pigeonholeio/pigeonhole-cli:latest-arm64
-#   - pigeonholeio/pigeonhole-cli:{{ .Version }}-arm64
-#   - pigeonholeio/pigeonhole-cli:{{ .Major }}-arm64
-#   - pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-arm64
+#   - planesailingio/gotfhub:latest-arm64
+#   - planesailingio/gotfhub:{{ .Version }}-arm64
+#   - planesailingio/gotfhub:{{ .Major }}-arm64
+#   - planesailingio/gotfhub:{{ .Major }}.{{ .Minor }}-arm64
 #   use: buildx
 #   # templated_dockerfile: Dockerfile
 #   build_flag_templates:
@@ -63,25 +65,24 @@ builds:
 #     - "--platform=linux/arm64"
 #   goarch: arm64
 
-# docker_manifests:
-# - name_template: "pigeonholeio/pigeonhole-cli:latest"
-#   skip_push: true
-#   image_templates:
-#     - "pigeonholeio/pigeonhole-cli:latest-amd64"
-#     - "pigeonholeio/pigeonhole-cli:latest-arm64"
-# - name_template: "pigeonholeio/pigeonhole-cli:{{ .Version }}"
-#   image_templates:
-#     - "pigeonholeio/pigeonhole-cli:{{ .Version }}-amd64"
-#     - "pigeonholeio/pigeonhole-cli:{{ .Version }}-arm64"
-# - name_template: "pigeonholeio/pigeonhole-cli:{{ .Major }}"
-#   image_templates:
-#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}-amd64"
-#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}-arm64"
-# - name_template: "pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}"
-#   image_templates:
-#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-amd64"
-#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-arm64"
-
+docker_manifests:
+- name_template: "planesailingio/gotfhub:latest"
+  skip_push: false
+  image_templates:
+    - "planesailingio/gotfhub:latest-amd64"
+    # - "planesailingio/gotfhub:latest-arm64"
+- name_template: "planesailingio/gotfhub:{{ .Version }}"
+  image_templates:
+    - "planesailingio/gotfhub:{{ .Version }}-amd64"
+    # - "planesailingio/gotfhub:{{ .Version }}-arm64"
+- name_template: "planesailingio/gotfhub:{{ .Major }}"
+  image_templates:
+    - "planesailingio/gotfhub:{{ .Major }}-amd64"
+    # - "planesailingio/gotfhub:{{ .Major }}-arm64"
+- name_template: "planesailingio/gotfhub:{{ .Major }}.{{ .Minor }}"
+  image_templates:
+    - "planesailingio/gotfhub:{{ .Major }}.{{ .Minor }}-amd64"
+    # - "planesailingio/gotfhub:{{ .Major }}.{{ .Minor }}-arm64"
 brews:
   - name: gotfhub
     repository:
