@@ -1,6 +1,6 @@
 
 version: 2
-project_name: goTFHub
+project_name: gotfhub
 report_sizes: false
 metadata:
   mod_timestamp: "{{ .CommitTimestamp }}"
