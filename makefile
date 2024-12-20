@@ -5,7 +5,7 @@ helm-docs:
 VERSION := "0.0.7"
 trigger:
 
-	git commit -am'Updated pull' && git push
+	git commit --allow-empty -am'Updated pull' && git push
 	git tag ${VERSION} --force
 	DOCKER_CONFIG=$$HOME/.docker/planesailingio goreleaser release --clean
 	$(MAKE) publish-chart
