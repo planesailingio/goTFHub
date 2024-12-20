@@ -13,4 +13,5 @@ trigger:
 publish-chart:
 	cd /lake/git/charts/charts && \
 		helm package --version "${VERSION}" --app-version "${VERSION}" /lake/git/goTFHub/helm/gotfhub && \
+		helm repo index . && \
 		git add . && git commit -m'add new chart' && git push
