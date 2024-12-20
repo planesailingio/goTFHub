@@ -4,42 +4,60 @@
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
+
 s3:
+  # -- The S3 backend provider. Anything other than minio results in aws
   backend: aws # or minio
+  # -- The S3 bucket name
   bucket: some-bucket
+
   credentials:
+    # -- If `true` a secret with environment vars is required. If `false`, the AWS SDK Client Credential Provider will be used e.g. `~/.aws/credentials` or env vars
     useStaticCreds: true
+
+    # -- Secret name with required environment variables credentials
     existingSecret: my-secret
   
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
+  # -- Image reference
   repository: planesailigio/gotfhub
   # This sets the pull policy for images.
+  # -- Pull Policy
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
+
+  # -- Container Image Tag version
   tag: 1.16.0
 
-# This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
-# This is to override the chart name.
+# -- This is to override the chart name.
 nameOverride: ""
+# -- This is to override the chart name.
 fullnameOverride: ""
 
+
+# -- Extra args to pass onto the command line
 extraArgs: []
+# -- Extra environment variables to pass into the container
 extraEnvs: []
 
+# -- Pull all environment variables from a secret
 extraEnvFrom: []
 # - secretRef:
 #     name: tf-credentials
 
-# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+# -- This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Automatically mount a ServiceAccount's API credentials?
   automount: true
   # Annotations to add to the service account e.g. AWS IAM role annotation for AWS S3 deployments
+
+  # -- Add the AWS IAM Role here if IRSA is being used
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
@@ -110,7 +128,7 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# -- This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
     path: /
@@ -120,7 +138,7 @@ readinessProbe:
     path: /
     port: http
 
-# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+# -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -128,8 +146,8 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-# Additional volumes on the output Deployment definition.
-volumes:
+# -- Additional volumes on the output Deployment definition.
+volumes: []
 # - name: 
 #   secret:
 #     secretName: mysecret
@@ -143,6 +161,7 @@ volumeMounts: []
 
 nodeSelector: {}
 
+# -- Add typical Kubernetes toleration rules
 tolerations: []
-
+# -- Add typical Kubernetes affinity rules
 affinity: {}
