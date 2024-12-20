@@ -1,0 +1,127 @@
+
+version: 2
+project_name: goTFHub
+report_sizes: false
+metadata:
+  mod_timestamp: "{{ .CommitTimestamp }}"
+builds:
+  - id: default
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    no_unique_dist_dir: true
+    dir: src
+    main: .
+    binary: "bin/{{ .Version }}/{{ .Os }}/{{ .Arch }}/gotfhub"
+
+    builder: go
+    gobinary: go
+    command: build
+    env:
+      - CGO_ENABLED=0
+
+
+# dockers:
+# - image_templates:
+#   - pigeonholeio/pigeonhole-cli:latest-amd64
+#   - pigeonholeio/pigeonhole-cli:{{ .Version }}-amd64
+#   - pigeonholeio/pigeonhole-cli:{{ .Major }}-amd64
+#   - pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-amd64
+#   use: buildx
+#   skip_push: true
+#   # templated_dockerfile: Dockerfile
+#   build_flag_templates:
+#     - "--pull"
+#     - "--label=io.pigeono.cli.created={{.Date}}"
+#     - "--label=io.pigeono.cli.title={{.ProjectName}}"
+#     - "--label=io.pigeono.cli.revision={{.FullCommit}}"
+#     - "--label=io.pigeono.cli.version={{.Version}}"
+#     - "--build-arg=VERSION={{ .Version }}"
+#     - "--build-arg=OS=linux"
+#     - "--build-arg=ARCH=amd64"
+#     - "--platform=linux/amd64"
+# - image_templates:
+#   - pigeonholeio/pigeonhole-cli:latest-arm64
+#   - pigeonholeio/pigeonhole-cli:{{ .Version }}-arm64
+#   - pigeonholeio/pigeonhole-cli:{{ .Major }}-arm64
+#   - pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-arm64
+#   use: buildx
+#   # templated_dockerfile: Dockerfile
+#   build_flag_templates:
+#     - "--pull"
+#     - "--label=io.pigeono.cli.created={{.Date}}"
+#     - "--label=io.pigeono.cli.title={{.ProjectName}}"
+#     - "--label=io.pigeono.cli.revision={{.FullCommit}}"
+#     - "--label=io.pigeono.cli.version={{.Version}}"
+#     - "--build-arg=VERSION={{ .Version }}"
+#     - "--build-arg=OS=linux"
+#     - "--build-arg=ARCH=arm64"
+#     - "--platform=linux/arm64"
+#   goarch: arm64
+
+# docker_manifests:
+# - name_template: "pigeonholeio/pigeonhole-cli:latest"
+#   skip_push: true
+#   image_templates:
+#     - "pigeonholeio/pigeonhole-cli:latest-amd64"
+#     - "pigeonholeio/pigeonhole-cli:latest-arm64"
+# - name_template: "pigeonholeio/pigeonhole-cli:{{ .Version }}"
+#   image_templates:
+#     - "pigeonholeio/pigeonhole-cli:{{ .Version }}-amd64"
+#     - "pigeonholeio/pigeonhole-cli:{{ .Version }}-arm64"
+# - name_template: "pigeonholeio/pigeonhole-cli:{{ .Major }}"
+#   image_templates:
+#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}-amd64"
+#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}-arm64"
+# - name_template: "pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}"
+#   image_templates:
+#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-amd64"
+#     - "pigeonholeio/pigeonhole-cli:{{ .Major }}.{{ .Minor }}-arm64"
+
+brews:
+  - name: gotfhub
+    repository:
+      owner: planesailingio
+      name: homebrew-tools
+      branch: main
+      git:
+        private_key: /Users/server/.ssh/id_rsa
+
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+  algorithm: sha256
+
+gomod:
+  gobinary: go
+
+changelog:
+  sort: desc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^updaated'
+
+release:
+  github:
+    owner: planesailingio
+    name: gotfhub
+  name_template: "{{.ProjectName}} v{{.Version}}"
+
+  draft: false
+  mode: replace
+  header: |
+    # 🚀 A new goTFHub release
+    Thanks for checking this version out, find out more below.
+
+  footer: |
+    ## Thanks for supporting,
+
+    Those were the changes on {{ .Tag }}!
+    Don't forget if you like the tool, don't forget to star it ⭐!
+  skip_upload: false
+  disable: false
