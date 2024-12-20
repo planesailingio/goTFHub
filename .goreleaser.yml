@@ -6,6 +6,8 @@ metadata:
 
 env:
   - DOCKER_CONFIG=$HOME/.docker/planesailingio
+
+  
 builds:
   - id: default
     goos:
