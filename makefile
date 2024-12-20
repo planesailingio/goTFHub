@@ -10,6 +10,7 @@ trigger:
 	DOCKER_CONFIG=$$HOME/.docker/planesailingio goreleaser release --clean
 	$(MAKE) publish-chart
 
+
 publish-chart:
 	cd /lake/git/charts/charts && \
 		helm package --version "${VERSION}" --app-version "${VERSION}" /lake/git/goTFHub/helm/gotfhub && \
