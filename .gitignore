@@ -70,3 +70,5 @@ artefacts.yaml
 test.*
 terraform-registry/
 helm/values.yaml
+dist/
+bin/
