@@ -2,9 +2,9 @@ helm-docs:
 	helm-docs
 
 
-VERSION := "0.0.7"
+VERSION := "1.0.7"
 trigger:
-	yq eval -iP '.image.tag="${VERSION}"' helm/gotfhub/values.yaml
+	yq eval -iP '.image.tag=${VERSION}' helm/gotfhub/values.yaml
 	git commit --allow-empty -am'Updated pull' && git push
 	git tag ${VERSION} --force
 	DOCKER_CONFIG=$$HOME/.docker/planesailingio goreleaser release --clean
