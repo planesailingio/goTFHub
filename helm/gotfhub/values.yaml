@@ -4,21 +4,16 @@
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
-
 s3:
   # -- The S3 backend provider. Anything other than minio results in aws
   backend: aws # or minio
   # -- The S3 bucket name
   bucket: some-bucket
-
   credentials:
     # -- If `true` a secret with environment vars is required. If `false`, the AWS SDK Client Credential Provider will be used e.g. `~/.aws/credentials` or env vars
     useStaticCreds: true
-
     # -- Secret name with required environment variables credentials
     existingSecret: my-secret
-  
-
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   # -- Image reference
@@ -29,21 +24,17 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
 
   # -- Container Image Tag version
-  tag: 1.16.0
-
+  tag: 0.0.15
 # -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # -- This is to override the chart name.
 nameOverride: ""
 # -- This is to override the chart name.
 fullnameOverride: ""
-
-
 # -- Extra args to pass onto the command line
 extraArgs: []
 # -- Extra environment variables to pass into the container
 extraEnvs: []
-
 # -- Pull all environment variables from a secret
 extraEnvFrom: []
 # - secretRef:
@@ -62,24 +53,22 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
-
 # This is for setting Kubernetes Annotations to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 # This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
-
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
@@ -87,46 +76,44 @@ service:
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
-
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: true
   className: nginx
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: terraform-registry.chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: 
-  - secretName: terraform-registry-chart-example-local-tls
-    hosts:
-      - terraform-registry.chart-example.local
+  tls:
+    - secretName: terraform-registry-chart-example-local-tls
+      hosts:
+        - terraform-registry.chart-example.local
   publicDomains:
     enabled: true
     tls:
-    - secretName: registry-terraform-io-tls
-      hosts:
-        - registry.terraform.io
+      - secretName: registry-terraform-io-tls
+        hosts:
+          - registry.terraform.io
     hosts:
-    - host: registry.terraform.io
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-
+      - host: registry.terraform.io
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
 # -- This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
@@ -137,7 +124,6 @@ readinessProbe:
   httpGet:
     path: /
     port: http
-
 # -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
   enabled: false
@@ -145,7 +131,6 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
 # -- Additional volumes on the output Deployment definition.
 volumes: []
 # - name: 
@@ -160,7 +145,6 @@ volumeMounts: []
 #   readOnly: true
 
 nodeSelector: {}
-
 # -- Add typical Kubernetes toleration rules
 tolerations: []
 # -- Add typical Kubernetes affinity rules
