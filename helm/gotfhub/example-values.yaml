@@ -1,0 +1,15 @@
+s3:
+  backend: minio # or minio
+  bucket: basicbucket
+ingress:
+  annotations: 
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: terraform-registry.planesailing.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: 
+  - secretName: terraform-registry-planesailing-io-tls
+    hosts:
+      - terraform-registry.planesailing.io
