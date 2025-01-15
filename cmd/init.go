@@ -14,8 +14,8 @@ import (
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Generate an example providers.yaml file",
-	Long:  `Quickly generate a providers.yaml with a bunch of example on-premise services to get you started.`,
+	Short: "Generate an example artefacts.yaml file",
+	Long:  `Quickly generate a artefacts.yaml with a bunch of example on-premise services to get you started.`,
 	Run:   runInit,
 }
 
@@ -26,7 +26,7 @@ func init() {
 var outputFile string
 
 func init() {
-	initCmd.Flags().StringVarP(&outputFile, "output", "o", "tf-artefacts.yaml", "Path to output providers.yaml file")
+	initCmd.Flags().StringVarP(&outputFile, "output", "o", "artefacts.yaml", "Path to output artefacts.yaml file")
 }
 
 func runInit(cmd *cobra.Command, args []string) {
