@@ -12,7 +12,9 @@ trigger:
 
 publish-chart:
 	cd /lake/git/charts/charts && \
-		helm package --version "${VERSION}" --app-version "${VERSION}" /lake/git/goTFHub/helm/gotfhub && \
+		helm package --version "${VERSION}" --app-version "${VERSION}" helm/gotfhub && \
 		cd .. && \
 		helm repo index . --url https://charts.planesailing.io && \
 		git add . && git commit -m'add new chart' && git push
+
+deploy:
