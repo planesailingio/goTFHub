@@ -16,6 +16,11 @@ The tool is also a single binary that can be used to mirror desired Terraform Pr
       - [Example `artefacts.yaml`](#example-artefactsyaml)
     - [Synchronise Providers \& Modules - Push](#synchronise-providers--modules---push)
     - [Kubernetes-based Deployment](#kubernetes-based-deployment)
+      - [Configuration Example](#configuration-example)
+        - [AWS](#aws)
+          - [IRSA](#irsa)
+          - [Static Credentials](#static-credentials)
+        - [MinIO](#minio)
     - [Seamless Experience](#seamless-experience)
   - [Example Terraform Configuration](#example-terraform-configuration)
 
@@ -69,6 +74,48 @@ Refer to the helm chart values file for more information.
 ```
 helm 
 ```
+#### Configuration Example
+You must supply the relevant environment variables
+
+##### AWS
+###### IRSA
+You can leverage IRSA and mount the identity from the `ServiceAccount`.     
+You must set `s3.credentials.useStaticCreds` to `false`
+
+###### Static Credentials
+Here's an example for AWS using static credentials.
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name:  s3-credentials
+type: Opaque
+stringData:
+  AWS_ACCESS_KEY_ID: 08ca1907-810f-48d5-b325-9addcd4f82c5
+  AWS_SECRET_ACCESS_KEY: 08ca1907-810f-48d5-b325-9addcd4f82c5
+  AWS_REGION: us-east-1
+```
+
+##### MinIO
+Here's an example for MinIO using static credentials. By default the Helm chart is configured to use the secret `s3-credentials`. You can update the reference in the values file `s3.credentials.existingSecret`.
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name:  s3-credentials
+type: Opaque
+stringData:
+  MINIO_ENDPOINT: http://miniohost-api:9000
+  MINIO_ACCESS_KEY_ID: 08ca1907-810f-48d5-b325-9addcd4f82c5
+  MINIO_SECRET_ACCESS_KEY: 08ca1907-810f-48d5-b325-9addcd4f82c5
+  MINIO_REGION: us-east-1
+  MINIO_TLS_ENABLE: true
+  MINIO_TLS_SKIP_VERIFY: false
+```
+
+
 
 
 ### Seamless Experience

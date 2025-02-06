@@ -23,8 +23,8 @@ var serveCmd = &cobra.Command{
 
 func init() {
 
-	// serveCmd.Flags().StringVar(&backend, "backend", "aws", "A backend to use. Currently supports aws and minio (Optional)")
-	// serveCmd.Flags().StringVar(&bucket, "bucket", "", "Desired S3 bucket to store Terraform artefacts (Required)")
+	serveCmd.Flags().StringVar(&backend, "backend", "aws", "A backend to use. Currently supports aws and minio (Optional)")
+	serveCmd.Flags().StringVar(&bucket, "bucket", "", "Desired S3 bucket to store Terraform artefacts (Required)")
 	// serveCmd.Flags().StringVar(&bucket, "bucket", "", "Desired S3 bucket to store Terraform artefacts (Required)")
 	serveCmd.MarkFlagRequired("bucket")
 	rootCmd.AddCommand(serveCmd)

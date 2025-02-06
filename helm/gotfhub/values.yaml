@@ -13,7 +13,7 @@ s3:
     # -- If `true` a secret with environment vars is required. If `false`, the AWS SDK Client Credential Provider will be used e.g. `~/.aws/credentials` or env vars
     useStaticCreds: true
     # -- Secret name with required environment variables credentials
-    existingSecret: my-secret
+    existingSecret: s3-credentials
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   # -- Image reference
@@ -24,7 +24,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
 
   # -- Container Image Tag version
-  tag: 1.18.0
+  tag: 1.19.0
 # -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # -- This is to override the chart name.
