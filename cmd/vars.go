@@ -10,4 +10,10 @@ var (
 	profile       string
 	prefix        string
 	port          string
+	parallelForks int
+	artefactCountDefault int
+	terraformArtifactNamespace string
+	terraformArtifactVersion string
+	terraformArtefactType string
+
 )
