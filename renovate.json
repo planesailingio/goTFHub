@@ -1,22 +1,39 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "mergeConfidence:all-badges"
+    "config:base",
+    ":disableDependencyDashboard"
   ],
+  "prHourlyLimit": 0,
   "automerge": true,
   "autoApprove": true,
-  "schedule": [
-    "at any time"
-  ],
+  
   "packageRules": [
     {
+      "schedule": [
+        "at any time"
+      ],
       "description": "Automerge non-major updates",
       "matchUpdateTypes": [
         "minor",
         "patch"
       ],
+      "baseBranchPatterns": ["master","renovate/.*"],
+      "automergeType": "branch",
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
       "automerge": true
     }
-  ]
+  ],
+  "automergeType": "branch",
+  "platformAutomerge": true,
+  "hostRules": [
+  {
+    "matchHost": "api.github.com",
+    "concurrentRequestLimit": 1,
+    "maxRequestsPerSecond": 8
+  }
+]
 }
