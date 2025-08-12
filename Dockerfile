@@ -1,4 +1,4 @@
-FROM rockylinux:9
+FROM rockylinux:9.2
 ARG VERSION
 COPY bin/$VERSION/linux/amd64/gotfhub /usr/local/bin
 RUN yum update -y && \
