@@ -19,7 +19,6 @@
         "patch"
       ],
       "baseBranchPatterns": ["main","master"],
-      "automergeType": "branch",
       "automerge": true
     }
   ],
