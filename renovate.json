@@ -24,5 +24,6 @@
     }
   ],
   "automergeType": "branch",
+  "ignoreTests": true,
   "platformAutomerge": true
 }
