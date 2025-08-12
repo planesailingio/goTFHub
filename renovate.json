@@ -18,7 +18,7 @@
         "minor",
         "patch"
       ],
-      "baseBranchPatterns": ["main","master"],
+      "baseBranchPatterns": ["master"],
       "automerge": true
     }
   ],
