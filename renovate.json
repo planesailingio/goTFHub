@@ -18,22 +18,11 @@
         "minor",
         "patch"
       ],
-      "baseBranchPatterns": ["master","renovate/.*"],
+      "baseBranchPatterns": ["main","master"],
       "automergeType": "branch",
-      "automerge": true
-    },
-    {
-      "matchDepTypes": ["devDependencies"],
       "automerge": true
     }
   ],
   "automergeType": "branch",
-  "platformAutomerge": true,
-  "hostRules": [
-  {
-    "matchHost": "api.github.com",
-    "concurrentRequestLimit": 1,
-    "maxRequestsPerSecond": 8
-  }
-]
+  "platformAutomerge": true
 }
