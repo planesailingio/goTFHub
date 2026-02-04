@@ -2,7 +2,7 @@ module github.com/planesailingio/gotfhub
 
 go 1.23.0
 
-toolchain go1.25.6
+toolchain go1.25.7
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
